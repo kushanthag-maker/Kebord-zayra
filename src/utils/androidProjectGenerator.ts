@@ -9,199 +9,16 @@ export interface AndroidProjectConfig {
 }
 
 export function generateGitHubWorkflowYaml(): string {
-  return `name: Build ZAYEA X Keyboard APK (All-in-One Auto Builder)
-
-on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
-
-concurrency:
-  group: \${{ github.workflow }}-\${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  build-apk:
-    name: Auto Generate & Build APK
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Auto-Generate Complete Android Project Files
-        run: |
-          echo "🚀 Generating complete ZAYEA X Android source codes..."
-          mkdir -p gradle/wrapper
-          mkdir -p app/src/main/java/com/zayeax/keyboard
-          mkdir -p app/src/main/res/layout
-          mkdir -p app/src/main/res/values
-          mkdir -p app/src/main/res/xml
-
-          # 1. settings.gradle.kts
-          cat << 'EOF' > settings.gradle.kts
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "ZayeaXKeyboard"
-include(":app")
-EOF
-
-          # 2. build.gradle.kts (Root)
-          cat << 'EOF' > build.gradle.kts
-plugins {
-    id("com.android.application") version "8.5.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
-}
-EOF
-
-          # 3. gradle.properties
-          cat << 'EOF' > gradle.properties
-org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
-android.useAndroidX=true
-android.nonTransitiveRClass=true
-EOF
-
-          # 4. gradle/wrapper/gradle-wrapper.properties
-          cat << 'EOF' > gradle/wrapper/gradle-wrapper.properties
-distributionBase=GRADLE_USER_HOME
-distributionPath=wrapper/dists
-distributionUrl=https\\://services.gradle.org/distributions/gradle-8.9-bin.zip
-zipStoreBase=GRADLE_USER_HOME
-zipStorePath=wrapper/dists
-EOF
-
-          # 5. app/build.gradle.kts
-          cat << 'EOF' > app/build.gradle.kts
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-}
-
-android {
-    namespace = "com.zayeax.keyboard"
-    compileSdk = 35
-
-    defaultConfig {
-        applicationId = "com.zayeax.keyboard"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0-ZAYEA-X"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-        debug {
-            isDebuggable = true
-            applicationIdSuffix = ".debug"
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
-dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-}
-EOF
-
-          # 6. app/proguard-rules.pro
-          cat << 'EOF' > app/proguard-rules.pro
--keep class com.zayeax.keyboard.** { *; }
-EOF
-
-          # 7. app/src/main/AndroidManifest.xml
-          cat << 'EOF' > app/src/main/AndroidManifest.xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <application
-        android:allowBackup="true"
-        android:icon="@android:drawable/sym_def_app_icon"
-        android:label="ZAYEA X Keyboard"
-        android:roundIcon="@android:drawable/sym_def_app_icon"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.ZayeaXKeyboard">
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.ZayeaXKeyboard">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <service
-            android:name=".ZayeaXInputMethodService"
-            android:permission="android.permission.BIND_INPUT_METHOD"
-            android:label="ZAYEA X Input Method"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data
-                android:name="android.view.im"
-                android:resource="@xml/method" />
-        </service>
-
-    </application>
-
-</manifest>
-EOF
-
-          # 8. app/src/main/res/xml/method.xml
-          cat << 'EOF' > app/src/main/res/xml/method.xml
-<?xml version="1.0" encoding="utf-8"?>
-<input-method xmlns:android="http://schemas.android.com/apk/res/android"
-    android:settingsActivity="com.zayeax.keyboard.MainActivity"
-    android:isDefault="true"
-    android:supportsSwitchingToNextInputMethod="true" />
-EOF
-
-          # 9. app/src/main/res/xml/qwerty.xml
-          cat << 'EOF' > app/src/main/res/xml/qwerty.xml
-<?xml version="1.0" encoding="utf-8"?>
+  const projectFiles: Record<string, string> = {
+    'settings.gradle.kts': generateSettingsGradle(),
+    'build.gradle.kts': generateRootBuildGradle(),
+    'gradle.properties': `org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8\nandroid.useAndroidX=true\nandroid.nonTransitiveRClass=true\n`,
+    'gradle/wrapper/gradle-wrapper.properties': generateGradleWrapperProperties(),
+    'app/build.gradle.kts': generateAppBuildGradle(),
+    'app/proguard-rules.pro': `-keep class com.zayeax.keyboard.** { *; }\n`,
+    'app/src/main/AndroidManifest.xml': generateAndroidManifest(),
+    'app/src/main/res/xml/method.xml': generateInputMethodXml(),
+    'app/src/main/res/xml/qwerty.xml': `<?xml version="1.0" encoding="utf-8"?>
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:keyWidth="10%p"
     android:keyHeight="52dp"
@@ -251,12 +68,8 @@ EOF
         <Key android:codes="-4" android:keyLabel="↵" android:keyWidth="20%p" android:keyEdgeFlags="right"/>
     </Row>
 
-</Keyboard>
-EOF
-
-          # 10. app/src/main/res/layout/keyboard_view.xml
-          cat << 'EOF' > app/src/main/res/layout/keyboard_view.xml
-<?xml version="1.0" encoding="utf-8"?>
+</Keyboard>`,
+    'app/src/main/res/layout/keyboard_view.xml': `<?xml version="1.0" encoding="utf-8"?>
 <android.inputmethodservice.KeyboardView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/keyboard"
@@ -266,12 +79,8 @@ EOF
     android:background="#090d16"
     android:keyBackground="@android:drawable/btn_default"
     android:keyTextColor="#00f2fe"
-    android:keyPreviewLayout="@null" />
-EOF
-
-          # 11. app/src/main/res/layout/activity_main.xml
-          cat << 'EOF' > app/src/main/res/layout/activity_main.xml
-<?xml version="1.0" encoding="utf-8"?>
+    android:keyPreviewLayout="@null" />`,
+    'app/src/main/res/layout/activity_main.xml': `<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -324,187 +133,68 @@ EOF
         android:textColor="#ffffff"
         android:layout_marginBottom="16dp" />
 
-</LinearLayout>
-EOF
-
-          # 12. app/src/main/res/values/strings.xml
-          cat << 'EOF' > app/src/main/res/values/strings.xml
-<resources>
+</LinearLayout>`,
+    'app/src/main/res/values/strings.xml': `<resources>
     <string name="app_name">ZAYEA X Keyboard</string>
     <string name="keyboard_service_name">ZAYEA X Input Method</string>
-</resources>
-EOF
-
-          # 13. app/src/main/res/values/colors.xml
-          cat << 'EOF' > app/src/main/res/values/colors.xml
-<resources>
+</resources>`,
+    'app/src/main/res/values/colors.xml': `<resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="cyan_glow">#FF06B6D4</color>
     <color name="purple_glow">#FF8B5CF6</color>
-</resources>
-EOF
-
-          # 14. app/src/main/res/values/themes.xml
-          cat << 'EOF' > app/src/main/res/values/themes.xml
-<resources>
+</resources>`,
+    'app/src/main/res/values/themes.xml': `<resources>
     <style name="Theme.ZayeaXKeyboard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/cyan_glow</item>
         <item name="colorPrimaryVariant">@color/purple_glow</item>
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:statusBarColor">#090d16</item>
     </style>
-</resources>
-EOF
+</resources>`,
+    'app/src/main/java/com/zayeax/keyboard/MainActivity.kt': generateKotlinMainActivity(),
+    'app/src/main/java/com/zayeax/keyboard/ZayeaXInputMethodService.kt': generateKotlinService(),
+  };
 
-          # 15. app/src/main/java/com/zayeax/keyboard/MainActivity.kt
-          cat << 'EOF' > app/src/main/java/com/zayeax/keyboard/MainActivity.kt
-package com.zayeax.keyboard
+  const jsonStr = JSON.stringify(projectFiles);
+  let b64 = '';
+  if (typeof btoa === 'function') {
+    b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+  } else if (typeof Buffer !== 'undefined') {
+    b64 = Buffer.from(jsonStr, 'utf-8').toString('base64');
+  }
 
-import android.content.Intent
-import android.os.Bundle
-import android.provider.Settings
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+  return `name: Build ZAYEA X Keyboard APK (All-in-One Auto Builder)
 
-class MainActivity : AppCompatActivity() {
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.ref }}
+  cancel-in-progress: true
 
-        val btnEnable = findViewById<Button>(R.id.btnEnableKeyboard)
-        val btnSelect = findViewById<Button>(R.id.btnSelectKeyboard)
-        val tvStatus = findViewById<TextView>(R.id.tvKeyboardStatus)
+jobs:
+  build-apk:
+    name: Auto Generate & Build APK
+    runs-on: ubuntu-latest
 
-        btnEnable.setOnClickListener {
-            val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-            startActivity(intent)
-            Toast.makeText(this, "Enable ZAYEA X in the Keyboard list", Toast.LENGTH_LONG).show()
-        }
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        btnSelect.setOnClickListener {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-        }
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-        updateStatus(tvStatus)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val tvStatus = findViewById<TextView>(R.id.tvKeyboardStatus)
-        updateStatus(tvStatus)
-    }
-
-    private fun updateStatus(tvStatus: TextView) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        val enabledMethods = imm.enabledInputMethodList
-        val isEnabled = enabledMethods.any { it.packageName == packageName }
-
-        if (isEnabled) {
-            tvStatus.text = "Status: ZAYEA X is ENABLED and Ready! 🚀"
-        } else {
-            tvStatus.text = "Status: Tap '1. Enable ZAYEA X' to activate"
-        }
-    }
-}
-EOF
-
-          # 16. app/src/main/java/com/zayeax/keyboard/ZayeaXInputMethodService.kt
-          cat << 'EOF' > app/src/main/java/com/zayeax/keyboard/ZayeaXInputMethodService.kt
-package com.zayeax.keyboard
-
-import android.inputmethodservice.InputMethodService
-import android.inputmethodservice.Keyboard
-import android.inputmethodservice.KeyboardView
-import android.media.AudioManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
-import android.view.KeyEvent
-import android.view.View
-
-class ZayeaXInputMethodService : InputMethodService(), KeyboardView.OnKeyboardActionListener {
-
-    private var keyboardView: KeyboardView? = null
-    private var qwertyKeyboard: Keyboard? = null
-    private var isCaps = false
-
-    override fun onCreateInputView(): View {
-        keyboardView = layoutInflater.inflate(R.layout.keyboard_view, null) as? KeyboardView
-        qwertyKeyboard = Keyboard(this, R.xml.qwerty)
-        keyboardView?.keyboard = qwertyKeyboard
-        keyboardView?.setOnKeyboardActionListener(this)
-        return keyboardView ?: View(this)
-    }
-
-    override fun onKey(primaryCode: Int, keyCodes: IntArray?) {
-        val inputConnection = currentInputConnection ?: return
-        playKeyFeedback()
-
-        when (primaryCode) {
-            Keyboard.KEYCODE_DELETE -> {
-                inputConnection.deleteSurroundingText(1, 0)
-            }
-            Keyboard.KEYCODE_SHIFT -> {
-                isCaps = !isCaps
-                qwertyKeyboard?.isShifted = isCaps
-                keyboardView?.invalidateAllKeys()
-            }
-            Keyboard.KEYCODE_DONE -> {
-                inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
-            }
-            32 -> {
-                inputConnection.commitText(" ", 1)
-            }
-            else -> {
-                var codeChar = primaryCode.toChar()
-                if (isCaps && Character.isLetter(codeChar)) {
-                    codeChar = Character.toUpperCase(codeChar)
-                }
-                inputConnection.commitText(codeChar.toString(), 1)
-            }
-        }
-    }
-
-    private fun playKeyFeedback() {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator.vibrate(
-                    VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE)
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
-                vibrator.vibrate(20)
-            }
-        } catch (_: Exception) {}
-
-        try {
-            val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD)
-        } catch (_: Exception) {}
-    }
-
-    override fun onPress(primaryCode: Int) {}
-    override fun onRelease(primaryCode: Int) {}
-    override fun onText(text: CharSequence?) {
-        currentInputConnection?.commitText(text, 1)
-    }
-    override fun swipeLeft() {}
-    override fun swipeRight() {}
-    override fun swipeDown() {}
-    override fun swipeUp() {}
-}
-EOF
-
-          echo "✅ All Android project source files generated successfully in 1 second!"
+      - name: Auto-Generate Complete Android Project Files
+        run: |
+          node -e "const fs = require('fs'), path = require('path'); const data = JSON.parse(Buffer.from('${b64}', 'base64').toString('utf8')); for (const [p, c] of Object.entries(data)) { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, c); } console.log('✅ Generated all Android project files in 0.1s!');"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
