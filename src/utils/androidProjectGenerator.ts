@@ -327,21 +327,18 @@ dependencies {
 
 export function generateAndroidManifest(): string {
   return `<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/sym_def_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@android:drawable/sym_def_app_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ZayeaXKeyboard"
-        tools:targetApi="31">
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.ZayeaXKeyboard">
 
         <!-- Main Settings / Setup Activity -->
         <activity
@@ -398,7 +395,7 @@ import android.view.KeyEvent
 import android.view.View
 
 /**
- * ZAYEA X - Animated Next-Gen Android Keyboard Service
+ * ZAYEA X - Ultra Fast, Zero-Lag Animated Next-Gen Android Keyboard Service
  * Supports English QWERTY, Sinhala Wijesekara, and Singlish Phonetic Typing.
  */
 class ZayeaXInputMethodService : InputMethodService(), KeyboardView.OnKeyboardActionListener {
@@ -406,25 +403,41 @@ class ZayeaXInputMethodService : InputMethodService(), KeyboardView.OnKeyboardAc
     private var keyboardView: KeyboardView? = null
     private var qwertyKeyboard: Keyboard? = null
     private var isCaps = false
-    private var singlishBuffer = StringBuilder()
+    private var audioManager: AudioManager? = null
+    private var vibratorManager: VibratorManager? = null
+    private var vibrator: Vibrator? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        // Pre-initialize audio and vibrator services for instant zero-lag responsiveness
+        try {
+            audioManager = getSystemService(AUDIO_SERVICE) as? AudioManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator = getSystemService(VIBRATOR_SERVICE) as? Vibrator
+            }
+        } catch (_: Exception) {}
+    }
 
     override fun onCreateInputView(): View {
         keyboardView = layoutInflater.inflate(R.layout.keyboard_view, null) as? KeyboardView
         qwertyKeyboard = Keyboard(this, R.xml.qwerty)
         keyboardView?.keyboard = qwertyKeyboard
         keyboardView?.setOnKeyboardActionListener(this)
+        keyboardView?.isPreviewEnabled = false // Disabled key preview popup for ultra-fast typing speed and zero UI overhead
         return keyboardView ?: View(this)
     }
 
     override fun onKey(primaryCode: Int, keyCodes: IntArray?) {
         val inputConnection = currentInputConnection ?: return
-        playKeyFeedback()
+        
+        // Fast instant feedback
+        playFastFeedback()
 
         when (primaryCode) {
             Keyboard.KEYCODE_DELETE -> {
-                if (singlishBuffer.isNotEmpty()) {
-                    singlishBuffer.deleteCharAt(singlishBuffer.length - 1)
-                }
                 inputConnection.deleteSurroundingText(1, 0)
             }
             Keyboard.KEYCODE_SHIFT -> {
@@ -436,7 +449,6 @@ class ZayeaXInputMethodService : InputMethodService(), KeyboardView.OnKeyboardAc
                 inputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
             }
             32 -> { // Space key
-                singlishBuffer.clear()
                 inputConnection.commitText(" ", 1)
             }
             else -> {
@@ -449,25 +461,20 @@ class ZayeaXInputMethodService : InputMethodService(), KeyboardView.OnKeyboardAc
         }
     }
 
-    private fun playKeyFeedback() {
-        // Haptic feedback
+    private fun playFastFeedback() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator.vibrate(
-                    VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE)
+                vibratorManager?.defaultVibrator?.vibrate(
+                    VibrationEffect.createOneShot(12, VibrationEffect.DEFAULT_AMPLITUDE)
                 )
             } else {
                 @Suppress("DEPRECATION")
-                val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
-                vibrator.vibrate(20)
+                vibrator?.vibrate(12)
             }
         } catch (_: Exception) {}
 
-        // Audio feedback
         try {
-            val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD)
+            audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, 0.4f)
         } catch (_: Exception) {}
     }
 
