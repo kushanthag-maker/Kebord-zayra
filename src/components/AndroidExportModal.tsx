@@ -229,6 +229,20 @@ export const AndroidExportModal: React.FC<AndroidExportModalProps> = ({
                 </p>
               </div>
             </div>
+
+            {/* Error Fix & Troubleshooting Notice */}
+            <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-2">
+              <div className="flex items-center gap-2 text-amber-300 text-xs font-bold">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>⚠️ "No file matched to [**/*.gradle*]" දෝෂය පැමිණියේ ඇයි? සහ විසඳුම:</span>
+              </div>
+              <p className="text-[11px] text-amber-200/90 leading-relaxed">
+                <b>හේතුව:</b> ඔබ GitHub හි <code>.github/workflows/main.yml</code> ගොනුව පමණක් සාදා, ඉතිරි Android Project files (<code>app/</code>, <code>build.gradle.kts</code> ආදිය) upload කර නොමැති වීම නිසා හෝ ZIP එක Folder එකක් ඇතුළේ upload කර තිබීම නිසා මෙම දෝෂය සිදුවිය.
+              </p>
+              <p className="text-[11px] text-emerald-300 font-medium">
+                <b>විසඳුම:</b> ඉහත <b>"Download Android Project (.zip)"</b> බටනය ඔබා ZIP එක බාගත කර, එය Extract කර එහි ඇති <u>සියලුම files</u> GitHub Repo එකට Upload කරන්න. අපගේ යාවත්කාලීන කළ නව Workflow එක මඟින් ස්වයංක්‍රීයවම APK එක Build කර දෙනු ඇත!
+              </p>
+            </div>
           </div>
 
           {/* Code Viewer Tabs */}

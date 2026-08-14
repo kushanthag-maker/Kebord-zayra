@@ -9,7 +9,7 @@ export interface AndroidProjectConfig {
 }
 
 export function generateGitHubWorkflowYaml(): string {
-  return `name: Build ZAYEA X Keyboard APK (1-Minute Fast Build)
+  return `name: Build ZAYEA X Keyboard APK (Fast 1-Min Build)
 
 on:
   push:
@@ -28,34 +28,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17 (Temurin Fast JVM)
+      - name: Set up Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
 
-      - name: Make Gradle Executable
-        run: chmod +x ./gradlew
-
-      - name: Build Debug APK with Gradle Sync & Cache
+      - name: Auto-Detect Project Structure & Prepare Files
         run: |
-          ./gradlew assembleDebug --no-daemon --parallel --build-cache --max-workers=4
+          echo "=== Inspecting workspace files ==="
+          ls -la
+          
+          # If files are uploaded inside a subfolder (e.g. ZAYEA_X_Android_Keyboard_Project), auto-move to root
+          if [ ! -f "build.gradle.kts" ] && [ ! -f "build.gradle" ] && [ ! -d "app" ]; then
+            SUBDIR=$(find . -maxdepth 3 -name "build.gradle.kts" -o -name "build.gradle" | head -n 1 | xargs -r dirname)
+            if [ -n "$SUBDIR" ] && [ "$SUBDIR" != "." ]; then
+              echo "Detected Android project inside $SUBDIR, moving contents to root..."
+              cp -rn "$SUBDIR"/* . || true
+            fi
+          fi
 
-      - name: Locate Generated APK
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build Debug APK
         run: |
-          ls -la app/build/outputs/apk/debug/
+          gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Locate & Prepare Generated APK
+        run: |
           mkdir -p build_output
-          cp app/build/outputs/apk/debug/*.apk build_output/ZAYEA_X_Keyboard_Debug.apk
+          find . -name "*.apk" -exec cp {} build_output/ZAYEA_X_Keyboard.apk \\;
+          ls -la build_output/
 
-      - name: Upload APK as GitHub Actions Artifact (Download in 1 Min)
+      - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ZAYEA-X-Keyboard-APK
-          path: build_output/ZAYEA_X_Keyboard_Debug.apk
+          path: build_output/ZAYEA_X_Keyboard.apk
           retention-days: 30
 `;
 }
@@ -63,8 +78,8 @@ jobs:
 export function generateRootBuildGradle(): string {
   return `// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.kotlin.android) apply false
+    id("com.android.application") version "8.5.2" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
 }
 `;
 }

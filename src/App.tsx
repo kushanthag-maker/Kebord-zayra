@@ -112,17 +112,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Quick Header Actions */}
+          {/* Status Indicator */}
           <div className="flex items-center gap-2">
-            <button
-              id="header-open-apk-export-btn"
-              onClick={() => setIsExportModalOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-950 font-black text-xs shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-105 active:scale-95"
-            >
-              <Github className="w-4 h-4 text-slate-950" />
-              <span className="hidden sm:inline">Download Android APK (1-Min Build)</span>
-              <span className="sm:hidden">Get APK</span>
-            </button>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>🇱🇰 Sinhala &amp; Singlish Live</span>
+            </span>
           </div>
         </div>
       </header>
