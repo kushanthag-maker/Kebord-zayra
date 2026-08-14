@@ -1,0 +1,6 @@
+{
+  "name": "ZAYEA X Keyboard",
+  "description": "Next-Gen animated custom keyboard app with Sinhala & Singlish phonetic typing, RGB lighting effects, mechanical sounds, AI assistant, and ready-to-build Android APK GitHub Actions project exporter.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,411 @@
+import { KeyDefinition, KeyboardTheme, ThemePreset } from '../types';
+
+export const THEME_PRESETS: KeyboardTheme[] = [
+  {
+    id: 'rgb-chroma',
+    name: 'Chroma RGB Matrix',
+    category: 'Gamer / RGB',
+    bgGradient: 'from-slate-950 via-purple-950/40 to-slate-950',
+    boardBg: 'bg-slate-950/90 backdrop-blur-xl border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.25)]',
+    keyBg: 'bg-slate-900/80 hover:bg-slate-800 text-slate-100 border border-cyan-500/30 hover:border-cyan-400 shadow-[0_2px_10px_rgba(0,0,0,0.5)]',
+    keyBgActive: 'bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.8)] scale-95',
+    keyBorder: 'border-cyan-500/40',
+    keyText: 'text-slate-100 font-semibold',
+    keySubText: 'text-cyan-400 text-[10px]',
+    actionKeyBg: 'bg-gradient-to-br from-indigo-900/90 to-purple-900/90 border border-purple-500/40 hover:border-purple-400 text-purple-200',
+    actionKeyText: 'text-purple-200',
+    accentColor: '#06b6d4',
+    glowColor: 'rgba(6, 182, 212, 0.6)',
+    animationClass: 'animate-pulse',
+  },
+  {
+    id: 'cyberpunk-neon',
+    name: 'Cyberpunk 2077',
+    category: 'Cyber / Neon',
+    bgGradient: 'from-black via-yellow-950/20 to-black',
+    boardBg: 'bg-zinc-950/95 border border-yellow-500/40 shadow-[0_0_35px_rgba(234,179,8,0.25)]',
+    keyBg: 'bg-zinc-900/90 hover:bg-zinc-800 text-yellow-300 border border-yellow-500/30 hover:border-yellow-400',
+    keyBgActive: 'bg-yellow-400 text-black font-black shadow-[0_0_25px_rgba(234,179,8,0.9)] scale-95',
+    keyBorder: 'border-yellow-500/50',
+    keyText: 'text-yellow-400 font-bold',
+    keySubText: 'text-cyan-400 text-[10px]',
+    actionKeyBg: 'bg-yellow-950/80 border border-yellow-500/60 text-yellow-400 hover:bg-yellow-900',
+    actionKeyText: 'text-yellow-300 font-bold',
+    accentColor: '#eab308',
+    glowColor: 'rgba(234, 179, 8, 0.7)',
+    animationClass: 'cyber-glow',
+  },
+  {
+    id: 'amoled-gold',
+    name: 'AMOLED Luxury Gold',
+    category: 'Dark / Luxury',
+    bgGradient: 'from-black via-zinc-950 to-black',
+    boardBg: 'bg-black border border-amber-500/30 shadow-[0_0_30px_rgba(245,158,11,0.15)]',
+    keyBg: 'bg-zinc-950 hover:bg-zinc-900 text-amber-100 border border-amber-500/20 hover:border-amber-400/60',
+    keyBgActive: 'bg-gradient-to-r from-amber-400 to-amber-600 text-black font-bold scale-95 shadow-[0_0_20px_rgba(245,158,11,0.6)]',
+    keyBorder: 'border-amber-500/30',
+    keyText: 'text-amber-200 font-medium',
+    keySubText: 'text-amber-500/70 text-[10px]',
+    actionKeyBg: 'bg-zinc-900/90 border border-amber-500/40 text-amber-300',
+    actionKeyText: 'text-amber-300',
+    accentColor: '#f59e0b',
+    glowColor: 'rgba(245, 158, 11, 0.5)',
+    animationClass: '',
+  },
+  {
+    id: 'frost-glass',
+    name: 'Frost Glassmorphism',
+    category: 'Modern Glass',
+    bgGradient: 'from-slate-900 via-sky-950/40 to-slate-900',
+    boardBg: 'bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]',
+    keyBg: 'bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 shadow-sm',
+    keyBgActive: 'bg-white/40 text-white font-bold scale-95 shadow-[0_0_15px_rgba(255,255,255,0.7)]',
+    keyBorder: 'border-white/20',
+    keyText: 'text-white font-medium',
+    keySubText: 'text-sky-300 text-[10px]',
+    actionKeyBg: 'bg-white/15 hover:bg-white/25 border border-white/30 text-sky-100',
+    actionKeyText: 'text-sky-100',
+    accentColor: '#38bdf8',
+    glowColor: 'rgba(56, 189, 248, 0.5)',
+    animationClass: '',
+  },
+  {
+    id: 'cosmic-nebula',
+    name: 'Cosmic Deep Space',
+    category: 'Space / Fantasy',
+    bgGradient: 'from-indigo-950 via-purple-950 to-slate-950',
+    boardBg: 'bg-slate-950/90 border border-purple-500/30 shadow-[0_0_35px_rgba(168,85,247,0.3)]',
+    keyBg: 'bg-indigo-950/70 hover:bg-indigo-900/80 text-purple-100 border border-purple-500/25 hover:border-purple-400',
+    keyBgActive: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold scale-95 shadow-[0_0_20px_rgba(217,70,239,0.8)]',
+    keyBorder: 'border-purple-500/40',
+    keyText: 'text-purple-100 font-semibold',
+    keySubText: 'text-pink-400 text-[10px]',
+    actionKeyBg: 'bg-purple-950/80 border border-pink-500/30 text-pink-200',
+    actionKeyText: 'text-pink-200',
+    accentColor: '#c084fc',
+    glowColor: 'rgba(192, 132, 252, 0.6)',
+    animationClass: '',
+  },
+  {
+    id: 'vaporwave',
+    name: 'Vaporwave 80s Synth',
+    category: 'Retro / Synth',
+    bgGradient: 'from-fuchsia-950 via-cyan-950 to-slate-950',
+    boardBg: 'bg-slate-950/95 border border-fuchsia-500/40 shadow-[0_0_30px_rgba(217,70,239,0.35)]',
+    keyBg: 'bg-slate-900/90 hover:bg-slate-800 text-pink-200 border border-fuchsia-500/30 hover:border-cyan-400',
+    keyBgActive: 'bg-gradient-to-r from-fuchsia-500 to-cyan-400 text-white font-bold scale-95 shadow-[0_0_20px_rgba(6,182,212,0.8)]',
+    keyBorder: 'border-fuchsia-500/40',
+    keyText: 'text-pink-300 font-bold',
+    keySubText: 'text-cyan-400 text-[10px]',
+    actionKeyBg: 'bg-fuchsia-950/70 border border-cyan-500/30 text-cyan-200',
+    actionKeyText: 'text-cyan-300',
+    accentColor: '#f43f5e',
+    glowColor: 'rgba(244, 63, 94, 0.6)',
+    animationClass: '',
+  },
+  {
+    id: 'emerald-glow',
+    name: 'Emerald Cyber Matrix',
+    category: 'Matrix / Hacker',
+    bgGradient: 'from-black via-emerald-950/30 to-black',
+    boardBg: 'bg-zinc-950/95 border border-emerald-500/40 shadow-[0_0_30px_rgba(16,185,129,0.3)]',
+    keyBg: 'bg-zinc-900/90 hover:bg-zinc-800 text-emerald-300 border border-emerald-500/30 hover:border-emerald-400',
+    keyBgActive: 'bg-emerald-500 text-black font-black scale-95 shadow-[0_0_20px_rgba(16,185,129,0.9)]',
+    keyBorder: 'border-emerald-500/40',
+    keyText: 'text-emerald-400 font-mono font-bold',
+    keySubText: 'text-emerald-500/70 text-[10px]',
+    actionKeyBg: 'bg-emerald-950/80 border border-emerald-500/50 text-emerald-300',
+    actionKeyText: 'text-emerald-300',
+    accentColor: '#10b981',
+    glowColor: 'rgba(16, 185, 129, 0.7)',
+    animationClass: '',
+  },
+  {
+    id: 'cherry-blossom',
+    name: 'Sakura Cherry Blossom',
+    category: 'Pastel / Aesthetic',
+    bgGradient: 'from-rose-950 via-pink-950 to-slate-950',
+    boardBg: 'bg-pink-950/80 border border-pink-400/30 shadow-[0_0_30px_rgba(244,114,182,0.25)]',
+    keyBg: 'bg-pink-950/70 hover:bg-pink-900/80 text-rose-100 border border-pink-400/25 hover:border-pink-300',
+    keyBgActive: 'bg-gradient-to-r from-pink-400 to-rose-400 text-white font-bold scale-95 shadow-[0_0_20px_rgba(244,114,182,0.7)]',
+    keyBorder: 'border-pink-400/30',
+    keyText: 'text-rose-200 font-semibold',
+    keySubText: 'text-rose-400 text-[10px]',
+    actionKeyBg: 'bg-rose-950/90 border border-pink-400/30 text-rose-200',
+    actionKeyText: 'text-rose-200',
+    accentColor: '#f472b6',
+    glowColor: 'rgba(244, 114, 182, 0.5)',
+    animationClass: '',
+  },
+];
+
+// QWERTY Layout rows
+export const QWERTY_ROWS: KeyDefinition[][] = [
+  [
+    { label: '1', subLabel: '!', value: '1' },
+    { label: '2', subLabel: '@', value: '2' },
+    { label: '3', subLabel: '#', value: '3' },
+    { label: '4', subLabel: '$', value: '4' },
+    { label: '5', subLabel: '%', value: '5' },
+    { label: '6', subLabel: '^', value: '6' },
+    { label: '7', subLabel: '&', value: '7' },
+    { label: '8', subLabel: '*', value: '8' },
+    { label: '9', subLabel: '(', value: '9' },
+    { label: '0', subLabel: ')', value: '0' },
+  ],
+  [
+    { label: 'q', subLabel: 'Q', value: 'q' },
+    { label: 'w', subLabel: 'W', value: 'w' },
+    { label: 'e', subLabel: 'E', value: 'e' },
+    { label: 'r', subLabel: 'R', value: 'r' },
+    { label: 't', subLabel: 'T', value: 't' },
+    { label: 'y', subLabel: 'Y', value: 'y' },
+    { label: 'u', subLabel: 'U', value: 'u' },
+    { label: 'i', subLabel: 'I', value: 'i' },
+    { label: 'o', subLabel: 'O', value: 'o' },
+    { label: 'p', subLabel: 'P', value: 'p' },
+  ],
+  [
+    { label: 'a', subLabel: 'A', value: 'a' },
+    { label: 's', subLabel: 'S', value: 's' },
+    { label: 'd', subLabel: 'D', value: 'd' },
+    { label: 'f', subLabel: 'F', value: 'f' },
+    { label: 'g', subLabel: 'G', value: 'g' },
+    { label: 'h', subLabel: 'H', value: 'h' },
+    { label: 'j', subLabel: 'J', value: 'j' },
+    { label: 'k', subLabel: 'K', value: 'k' },
+    { label: 'l', subLabel: 'L', value: 'l' },
+  ],
+  [
+    { label: '⇧', value: 'shift', type: 'modifier', action: 'shift', width: 'flex-[1.4]' },
+    { label: 'z', subLabel: 'Z', value: 'z' },
+    { label: 'x', subLabel: 'X', value: 'x' },
+    { label: 'c', subLabel: 'C', value: 'c' },
+    { label: 'v', subLabel: 'V', value: 'v' },
+    { label: 'b', subLabel: 'B', value: 'b' },
+    { label: 'n', subLabel: 'N', value: 'n' },
+    { label: 'm', subLabel: 'M', value: 'm' },
+    { label: '⌫', value: 'backspace', type: 'action', action: 'backspace', width: 'flex-[1.4]' },
+  ],
+  [
+    { label: '?123', value: 'symbols', type: 'action', action: 'symbols', width: 'flex-[1.2]' },
+    { label: '🌐 SI', subLabel: 'සිංහල', value: 'singlish', type: 'action', action: 'layout', width: 'flex-[1.2]' },
+    { label: '😊', value: 'emoji', type: 'action', action: 'emoji', width: 'flex-[1]' },
+    { label: 'Space  (ZAYEA X)', value: ' ', type: 'space', action: 'space', width: 'flex-[4.5]' },
+    { label: '.', subLabel: ',', value: '.' },
+    { label: '↵', value: '\n', type: 'action', action: 'enter', width: 'flex-[1.5]' },
+  ],
+];
+
+// Sinhala Wijesekara Layout
+export const WIJESEKARA_ROWS: KeyDefinition[][] = [
+  [
+    { label: '1', subLabel: '!', value: '1' },
+    { label: '2', subLabel: '@', value: '2' },
+    { label: '3', subLabel: '#', value: '3' },
+    { label: '4', subLabel: '$', value: '4' },
+    { label: '5', subLabel: '%', value: '5' },
+    { label: '6', subLabel: '^', value: '6' },
+    { label: '7', subLabel: '&', value: '7' },
+    { label: '8', subLabel: '*', value: '8' },
+    { label: '9', subLabel: '(', value: '9' },
+    { label: '0', subLabel: ')', value: '0' },
+  ],
+  [
+    { label: 'ො', subLabel: 'ෝ', value: 'ො' },
+    { label: 'අ', subLabel: 'ආ', value: 'අ' },
+    { label: 'ැ', subLabel: 'ෑ', value: 'ැ' },
+    { label: 'ර', subLabel: 'ඍ', value: 'ර' },
+    { label: 'එ', subLabel: 'ඒ', value: 'එ' },
+    { label: 'හ', subLabel: 'ශ', value: 'හ' },
+    { label: 'ම', subLabel: 'ඹ', value: 'ම' },
+    { label: 'ස', subLabel: 'ෂ', value: 'ස' },
+    { label: 'ද', subLabel: 'ධ', value: 'ද' },
+    { label: 'ච', subLabel: 'ඡ', value: 'ච' },
+  ],
+  [
+    { label: '්', subLabel: '්', value: '්' },
+    { label: 'ි', subLabel: 'ී', value: 'ි' },
+    { label: 'ා', subLabel: 'ෘ', value: 'ා' },
+    { label: 'ෙ', subLabel: 'ේ', value: 'ෙ' },
+    { label: 'ප', subLabel: 'ඵ', value: 'ප' },
+    { label: 'බ', subLabel: 'භ', value: 'බ' },
+    { label: 'ක', subLabel: 'ඛ', value: 'ක' },
+    { label: 'ත', subLabel: 'ථ', value: 'ත' },
+    { label: 'ග', subLabel: 'ඝ', value: 'ග' },
+  ],
+  [
+    { label: '⇧', value: 'shift', type: 'modifier', action: 'shift', width: 'flex-[1.4]' },
+    { label: 'ු', subLabel: 'ූ', value: 'ු' },
+    { label: 'ං', subLabel: 'ඃ', value: 'ං' },
+    { label: 'ජ', subLabel: 'ඣ', value: 'ජ' },
+    { label: 'ට', subLabel: 'ඨ', value: 'ට' },
+    { label: 'ඩ', subLabel: 'ඪ', value: 'ඩ' },
+    { label: 'න', subLabel: 'ණ', value: 'න' },
+    { label: 'ල', subLabel: 'ළ', value: 'ල' },
+    { label: '⌫', value: 'backspace', type: 'action', action: 'backspace', width: 'flex-[1.4]' },
+  ],
+  [
+    { label: '?123', value: 'symbols', type: 'action', action: 'symbols', width: 'flex-[1.2]' },
+    { label: '🌐 EN', subLabel: 'English', value: 'qwerty', type: 'action', action: 'layout', width: 'flex-[1.2]' },
+    { label: '😊', value: 'emoji', type: 'action', action: 'emoji', width: 'flex-[1]' },
+    { label: 'හිස්තැන  (ZAYEA X)', value: ' ', type: 'space', action: 'space', width: 'flex-[4.5]' },
+    { label: '.', subLabel: '෴', value: '.' },
+    { label: '↵', value: '\n', type: 'action', action: 'enter', width: 'flex-[1.5]' },
+  ],
+];
+
+// Symbols rows
+export const SYMBOLS_ROWS: KeyDefinition[][] = [
+  [
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+    { label: '5', value: '5' },
+    { label: '6', value: '6' },
+    { label: '7', value: '7' },
+    { label: '8', value: '8' },
+    { label: '9', value: '9' },
+    { label: '0', value: '0' },
+  ],
+  [
+    { label: '@', value: '@' },
+    { label: '#', value: '#' },
+    { label: '$', value: '$' },
+    { label: 'Rs.', value: 'Rs. ' },
+    { label: '%', value: '%' },
+    { label: '&', value: '&' },
+    { label: '-', value: '-' },
+    { label: '+', value: '+' },
+    { label: '(', value: '(' },
+    { label: ')', value: ')' },
+  ],
+  [
+    { label: '=', value: '=' },
+    { label: '*', value: '*' },
+    { label: '"', value: '"' },
+    { label: "'", value: "'" },
+    { label: ':', value: ':' },
+    { label: ';', value: ';' },
+    { label: '!', value: '!' },
+    { label: '?', value: '?' },
+    { label: '/', value: '/' },
+  ],
+  [
+    { label: '<', value: '<' },
+    { label: '>', value: '>' },
+    { label: '[', value: '[' },
+    { label: ']', value: ']' },
+    { label: '{', value: '{' },
+    { label: '}', value: '}' },
+    { label: '~', value: '~' },
+    { label: '_', value: '_' },
+    { label: '⌫', value: 'backspace', type: 'action', action: 'backspace', width: 'flex-[1.5]' },
+  ],
+  [
+    { label: 'ABC', value: 'qwerty', type: 'action', action: 'layout', width: 'flex-[1.5]' },
+    { label: '🌐 SI', value: 'singlish', type: 'action', action: 'layout', width: 'flex-[1.2]' },
+    { label: '😊', value: 'emoji', type: 'action', action: 'emoji', width: 'flex-[1]' },
+    { label: 'Space', value: ' ', type: 'space', action: 'space', width: 'flex-[4.5]' },
+    { label: ',', value: ',' },
+    { label: '↵', value: '\n', type: 'action', action: 'enter', width: 'flex-[1.5]' },
+  ],
+];
+
+// Emoji Categories
+export const EMOJI_CATEGORIES = [
+  {
+    name: 'Smileys & Emotion',
+    emojis: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥹', '😊', '😇', '🙂', '😉', '😌', '😍', '🥰', '😘', '😋', '😜', '🤪', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '🤫', '🫢', '🥱', '😴', '🤤', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🫠', '🤐', '🤨', '😐', '😑', '😶', '🫥', '😶‍🌫️', '🙄', '😬', '😮‍💨', '🤥', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼'],
+  },
+  {
+    name: 'Gestures & Hearts',
+    emojis: ['👍', '👎', '👌', '🤌', '🤏', '✌️', '🤞', '🫰', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '✋', '🤚', '🖐️', '🖖', '👋', '🤙', '💪', '🦾', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❤️‍🔥', '❤️‍🩹', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟'],
+  },
+  {
+    name: 'Cool & Cyber & Tech',
+    emojis: ['⚡', '🔥', '✨', '🌟', '💫', '💥', '🚀', '🛸', '🛰️', '🪐', '🌙', '🌌', '💻', '🖥️', '⌨️', '🖱️', '📱', '🕹️', '🎮', '🎧', '🎙️', '🤖', '🔋', '🔌', '📡', '💡', '💎', '🔮', '🧿', '🎯', '🏆', '🥇', '👑', '🕶️', '⚡️', '🛡️', '⚔️', '💣', '☣️', '☢️'],
+  },
+  {
+    name: 'Kaomoji & ASCII Art',
+    emojis: [
+      '(•‿•)',
+      '(｡♥‿♥｡)',
+      '¯\\_(ツ)_/¯',
+      '(╯°□°)╯︵ ┻━┻',
+      '┬─┬ノ( º _ ºノ)',
+      '(ง\'̀-\'́)ง',
+      '(づ｡◕‿‿◕｡)づ',
+      '(•_•) ( •_•)>⌐■-■ (⌐■_■)',
+      '(´• ω •`)',
+      '(◕‿◕✿)',
+      'ʕ•ᴥ•ʔ',
+      'ლ(ಠ益ಠლ)',
+      '(づ￣ ³￣)づ',
+      'ヘ(^_^ヘ)',
+      '(☞ﾟヮﾟ)☞',
+    ],
+  },
+];
+
+// Fancy text transforms
+export function transformToFancyFont(text: string, fontStyle: string): string {
+  if (!text) return '';
+
+  const normalChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  const fonts: { [key: string]: string[] } = {
+    bold: [
+      '𝐚','𝐛','𝐜','𝐝','𝐞','𝐟','𝐠','𝐡','𝐢','𝐣','𝐤','𝐥','𝐦','𝐧','𝐨','𝐩','𝐪','𝐫','𝐬','𝐭','𝐮','𝐯','𝐰','𝐱','𝐲','𝐳',
+      '𝐀','𝐁','𝐂','𝐃','𝐄','𝐅','𝐆','𝐇','𝐈','𝐉','𝐊','𝐋','𝐌','𝐍','𝐎','𝐏','𝐐','𝐑','𝐒','𝐓','𝐔','𝐕','𝐖','𝐗','𝐘','𝐙',
+      '𝟎','𝟏','𝟐','𝟑','𝟒','𝟓','𝟔','𝟕','𝟖','𝟗',
+    ],
+    sansBold: [
+      '𝗮','𝗯','𝗰','𝗱','𝗲','𝗳','𝗴','𝗵','𝗶','𝗷','𝗸','𝗹','𝗺','𝗻','𝗼','𝗽','𝗾','𝗿','𝘀','𝘁','𝘂','𝘃','𝘄','𝘅','𝘆','𝘇',
+      '𝗔','𝗕','𝗖','𝗗','𝗘','𝗙','𝗚','𝗛','𝗜','𝗝','𝗞','𝗟','𝗠','𝗡','𝗢','𝗣','𝗤','𝗥','𝗦','𝗧','𝗨','𝗩','𝗪','𝗫','𝗬','𝗭',
+      '𝟬','𝟭','𝟮','𝟯','𝟰','𝟱','𝟲','𝟳','𝟴','𝟵',
+    ],
+    italic: [
+      '𝘢','𝘣','𝘤','𝘥','𝘦','𝘧','𝘨','𝘩','𝘪','𝘫','𝘬','𝘭','𝘮','𝘯','𝘰','𝘱','𝘲','𝘳','𝘴','𝘵','𝘶','𝘷','𝘸','𝘹','𝘺','𝘻',
+      '𝘈','𝘉','𝘊','𝘋','𝘌','𝘍','𝘎','𝘏','𝘐','𝘑','𝘒','𝘓','𝘔','𝘕','𝘖','𝘗','𝘘','𝘙','𝘚','𝘛','𝘜','𝘝','𝘞','𝘟','𝘠','𝘡',
+      '0','1','2','3','4','5','6','7','8','9',
+    ],
+    script: [
+      '𝒶','𝒷','𝒸','𝒹','𝑒','𝒻','𝑔','𝒽','𝒾','𝒿','𝓀','𝓁','𝓂','𝓃','𝑜','𝓅','𝓆','𝓇','𝓈','𝓉','𝓊','𝓋','𝓌','𝓍','𝓎','𝓏',
+      '𝒜','𝐵','𝒞','𝒟','𝐸','𝐹','𝒢','𝐻','𝐼','𝒥','𝒦','𝐿','𝑀','𝒩','𝒪','𝒫','𝒬','𝑅','𝒮','𝒯','𝒰','𝒱','𝒲','𝒳','𝒴','𝒵',
+      '0','1','2','3','4','5','6','7','8','9',
+    ],
+    gothic: [
+      '𝔞','𝔟','𝔠','𝔡','𝔢','𝔣','𝔤','𝔥','𝔦','𝔧','𝔨','𝔩','𝔪','𝔫','𝔬','𝔭','𝔮','𝔯','𝔰','𝔱','𝔲','𝔳','𝔴','𝔵','𝔶','𝔷',
+      '𝔄','𝔅','ℭ','𝔇','𝔈','𝔉','𝔊','ℌ','ℑ','𝔍','𝔎','𝔏','𝔐','𝔑','𝔒','𝔓','𝔔','ℜ','𝔖','𝔗','𝔘','𝔙','𝔚','𝔛','𝔜','ℨ',
+      '0','1','2','3','4','5','6','7','8','9',
+    ],
+    cyberMono: [
+      '𝚊','𝚋','𝚌','𝚍','𝚎','𝚏','𝚐','𝚑','𝚒','𝚓','𝚔','𝚕','𝚖','𝚗','𝚘','𝚙','𝚚','𝚛','𝚜','𝚝','𝚞','𝚟','𝚠','𝚡','𝚢','𝚣',
+      '𝙰','𝙱','𝙲','𝙳','𝙴','𝙵','𝙶','𝙷','𝙸','𝙹','𝙺','𝙻','𝙼','𝙽','𝙾','𝙿','𝚀','𝚁','𝚂','𝚃','𝚄','𝚅','𝚆','𝚇','𝚈','𝚉',
+      '𝟶','𝟷','𝟸','𝟹','𝟺','𝟻','𝟼','𝟽','𝟾','𝟿',
+    ],
+    bubbles: [
+      'ⓐ','ⓑ','ⓒ','ⓓ','ⓔ','ⓕ','ⓖ','ⓗ','ⓘ','ⓙ','ⓚ','ⓛ','ⓜ','ⓝ','ⓞ','ⓟ','ⓠ','ⓡ','ⓢ','ⓣ','ⓤ','ⓥ','ⓦ','ⓧ','ⓨ','ⓩ',
+      'Ⓐ','Ⓑ','Ⓒ','Ⓓ','Ⓔ','Ⓕ','Ⓖ','Ⓗ','Ⓘ','Ⓙ','Ⓚ','Ⓛ','Ⓜ','Ⓝ','Ⓞ','Ⓟ','Ⓠ','Ⓡ','Ⓢ','Ⓣ','Ⓤ','Ⓥ','Ⓦ','Ⓧ','Ⓨ','Ⓩ',
+      '⓪','①','②','③','④','⑤','⑥','⑦','⑧','⑨',
+    ],
+  };
+
+  const chosen = fonts[fontStyle];
+  if (!chosen) return text;
+
+  let result = '';
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const index = normalChars.indexOf(char);
+    if (index !== -1 && chosen[index]) {
+      result += chosen[index];
+    } else {
+      result += char;
+    }
+  }
+
+  return result;
+}
