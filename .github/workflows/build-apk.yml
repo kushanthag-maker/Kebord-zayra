@@ -1,0 +1,63 @@
+name: Build ZAYEA X Keyboard APK (Fast 1-Min Build)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    name: Build & Export APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Auto-Detect Project Structure & Prepare Files
+        run: |
+          echo "=== Inspecting workspace files ==="
+          ls -la
+          
+          # If files are uploaded inside a subfolder (e.g. ZAYEA_X_Android_Keyboard_Project), auto-move to root
+          if [ ! -f "build.gradle.kts" ] && [ ! -f "build.gradle" ] && [ ! -d "app" ]; then
+            SUBDIR=$(find . -maxdepth 3 -name "build.gradle.kts" -o -name "build.gradle" | head -n 1 | xargs -r dirname)
+            if [ -n "$SUBDIR" ] && [ "$SUBDIR" != "." ]; then
+              echo "Detected Android project inside $SUBDIR, moving contents to root..."
+              cp -rn "$SUBDIR"/* . || true
+            fi
+          fi
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build Debug APK
+        run: |
+          gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Locate & Prepare Generated APK
+        run: |
+          mkdir -p build_output
+          find . -name "*.apk" -exec cp {} build_output/ZAYEA_X_Keyboard.apk \;
+          ls -la build_output/
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZAYEA-X-Keyboard-APK
+          path: build_output/ZAYEA_X_Keyboard.apk
+          retention-days: 30
